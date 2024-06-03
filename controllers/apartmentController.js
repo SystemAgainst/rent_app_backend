@@ -1,33 +1,45 @@
+const ApiError = require("../errors/apiError");
+const {INTERNAL_ERROR} = require("../errors/constants");
+const { Apartment } = require("../models");
+
 class ApartmentController {
-    getAll(req, res, next) {
+    async getAll(req, res, next) {
         try {
+            const apartmentList = await Apartment.findAndCountAll({});
 
+            res.status(201).json(apartmentList);
         } catch (e) {
-
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
 
-    getOne(req, res, next) {
+    async getOne(req, res, next) {
         try {
+            const apartment = await Apartment.findOne({});
 
+            res.status(201).json(apartment);
         } catch (e) {
-
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
 
-    create(req, res, next) {
+    async create(req, res, next) {
         try {
 
         } catch (e) {
-
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
 
-    update(req, res, next) {
+    async update(req, res, next) {
         try {
 
         } catch (e) {
-
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
 }

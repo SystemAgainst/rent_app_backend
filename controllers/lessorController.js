@@ -21,7 +21,6 @@ class LessorController {
     async getAll(req, res, next) {
         try {
             const lessorList = await Lessor.findAndCountAll({});
-            console.log(lessorList);
 
             if (lessorList.count === 0) {
                 return next(ApiError.badRequest(USER_NOT_FOUND));
