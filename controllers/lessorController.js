@@ -47,7 +47,7 @@ class LessorController {
                 return next(ApiError.badRequest(INVALID_DATA));
             }
 
-            const existedUser = await User.findOne({ where: { email } });
+            const existedUser = await Lessor.findOne({ where: { email } });
 
             if (existedUser) {
                 return next(ApiError.badRequest(EMAIL_EXIST))
@@ -62,7 +62,7 @@ class LessorController {
                 passport_series,
             });
 
-            const user = await User.create({
+            const user = await Lessor.create({
                 email,
                 password: hashedPassword,
                 role,
@@ -83,7 +83,7 @@ class LessorController {
         try {
             const { email, password } = req.body;
 
-            const user = await User.findOne( { where: {email} } );
+            const user = await Lessor.findOne( { where: {email} } );
 
             if (!user) {
                 return next(ApiError.internal(USER_NOT_FOUND))
