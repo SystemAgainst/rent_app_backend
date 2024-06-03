@@ -13,7 +13,7 @@ const generateJwt = (id, email, role, name, last_name, middle_name, passport_num
     return jwt.sign(
         {id, email, role, name, last_name, middle_name, passport_number, passport_series},
         process.env.SECRET_KEY,
-        {expiresIn: '24h'}
+        {expiresIn: '168h'}
     )
 }
 
