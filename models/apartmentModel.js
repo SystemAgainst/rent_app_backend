@@ -6,7 +6,7 @@ const Apartment = sequelize.define('Apartment', {
     id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
     title: {
         type: DataTypes.TEXT,
@@ -28,15 +28,15 @@ const Apartment = sequelize.define('Apartment', {
     address: {
         type: DataTypes.TEXT,
         defaultValue: 'Краснодар, Воронежская ул., 47/Г',
-        allowNull: false
+        allowNull: false,
     },
     square: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.TEXT,
         allowNull: false,
     },
     room_count: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
     },
 
 }, {
