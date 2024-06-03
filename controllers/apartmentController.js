@@ -1,7 +1,6 @@
 const ApiError = require("../errors/apiError");
-const {INTERNAL_ERROR, USER_NOT_FOUND} = require("../errors/constants");
+const { INTERNAL_ERROR, USER_NOT_FOUND, APARTMENT_NOT_FOUND} = require("../errors/constants");
 const { Apartment, Lessor } = require("../models");
-const {logger} = require("sequelize/lib/utils/logger");
 
 class ApartmentController {
     async getAll(req, res, next) {
@@ -17,11 +16,24 @@ class ApartmentController {
 
     async getOne(req, res, next) {
         try {
-            const apartment = await Apartment.findOne({});
+            const { id } = req.params;
 
-            res.status(201).json(apartment);
+            const apartment = await Apartment.findOne({
+                where: { id },
+                include: [
+                    {
+                        model: Lessor,
+                        as: 'lessor',
+                    },
+                ],
+            });
+
+            if (!apartment) {
+                return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
+            }
+
+            res.status(200).json(apartment);
         } catch (e) {
-            console.error(e);
             return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
