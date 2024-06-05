@@ -42,7 +42,7 @@ class ApartmentController {
         try {
             let { title, description, address, square, room_count, cost, lessor_id } = req.body;
 
-            const lessor = await Apartment.findByPk(lessor_id);
+            const lessor = await Lessor.findByPk(lessor_id);
 
             if (!lessor) {
                 return next(ApiError.badRequest(USER_NOT_FOUND));

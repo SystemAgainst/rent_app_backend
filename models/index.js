@@ -12,6 +12,8 @@ Lessor.hasMany(Apartment, { foreignKey: 'lessor_id', as: 'apartment' });
 Client.belongsTo(Lessor, { foreignKey: 'lessorId', as: 'lessor' });
 Lessor.hasMany(Client, { foreignKey: 'lessorId', as: 'clients' });
 
+Client.belongsTo(Apartment, { foreignKey: 'apartmentId', as: 'apartment' });
+Apartment.hasOne(Client, { foreignKey: 'apartmentId', as: 'client' });
 
 module.exports = {
     Lessor,

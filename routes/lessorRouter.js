@@ -8,5 +8,6 @@ router.get('/auth', authMiddleware, controller.check);
 router.post('/register', controller.register);
 router.post('/login', controller.login);
 router.post('/add-client', controller.addClient);
+router.get('/list-clients', controller.getClients);
 
 module.exports = router;

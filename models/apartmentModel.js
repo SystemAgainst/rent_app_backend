@@ -38,7 +38,10 @@ const Apartment = sequelize.define('Apartment', {
         type: DataTypes.BIGINT,
         allowNull: false,
     },
-
+    lessor_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
 }, {
     tableName: 'apartment',
 });

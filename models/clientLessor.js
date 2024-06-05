@@ -27,6 +27,11 @@ const Client = sequelize.define('Client', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    apartmentId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true
+    },
 }, {
     tableName: 'clients',
 });
