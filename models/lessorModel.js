@@ -19,7 +19,7 @@ const Lessor = sequelize.define('Lessor', {
         unique: false
     },
     role: {
-        type: DataTypes.ENUM("LESSOR", "RENTER"),
+        type: DataTypes.ENUM("LESSOR", "CLIENT"),
         allowNull: true,
         defaultValue: "LESSOR",
     },

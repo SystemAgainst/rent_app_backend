@@ -1,6 +1,7 @@
 const Lessor = require('./lessorModel');
 const Passport = require('./passportModel');
 const Apartment = require('./apartmentModel');
+const Client = require('./clientLessor');
 
 Lessor.belongsTo(Passport, { foreignKey: 'passport_id', as: 'passport' });
 Passport.hasOne(Lessor, { foreignKey: 'passport_id', as: 'lessor' });
@@ -8,9 +9,13 @@ Passport.hasOne(Lessor, { foreignKey: 'passport_id', as: 'lessor' });
 Apartment.belongsTo(Lessor, { foreignKey: 'lessor_id', as: 'lessor' });
 Lessor.hasMany(Apartment, { foreignKey: 'lessor_id', as: 'apartment' });
 
+Client.belongsTo(Lessor, { foreignKey: 'lessorId', as: 'lessor' });
+Lessor.hasMany(Client, { foreignKey: 'lessorId', as: 'clients' });
+
 
 module.exports = {
     Lessor,
     Passport,
     Apartment,
+    Client,
 };

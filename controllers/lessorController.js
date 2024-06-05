@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken')
-const { Lessor, Passport } = require("../models");
+const jwt = require('jsonwebtoken');
+const { Lessor, Passport, Client } = require("../models");
 const ApiError = require('../errors/apiError');
 const {
     INVALID_DATA,
@@ -15,7 +15,7 @@ const generateJwt = (id, email, role, name, last_name, middle_name, passport_num
         process.env.SECRET_KEY,
         {expiresIn: '168h'}
     )
-}
+};
 
 class LessorController {
     async getAll(req, res, next) {
@@ -100,6 +100,30 @@ class LessorController {
             return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
-}
+
+    async addClient(req, res, next) {
+        try {
+            const { fullName, passportNumber, monthlyPayment, paymentDay, lessorId } = req.body;
+
+            const lessor = await Lessor.findByPk(lessorId);
+
+            if (!lessor) {
+                return next(ApiError.badRequest(USER_NOT_FOUND));
+            }
+
+            const client = await Client.create({
+                fullName,
+                passportNumber,
+                monthlyPayment,
+                paymentDay,
+                lessorId
+            });
+
+            res.status(201).json(client);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
+        }
+    }}
 
 module.exports = new LessorController();
