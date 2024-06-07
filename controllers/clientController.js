@@ -17,7 +17,12 @@ const generateJwt = (id, email, role, name, last_name, middle_name, passport_num
 class ClientController {
     async getAll(req, res, next) {
         try {
-            const clientList = await Client.findAndCountAll({});
+            const clientList = await Client.findAndCountAll({
+                include: [{
+                    model: Apartment,
+                    as: 'apartment'
+                }]
+            });
 
             if (clientList.count === 0) {
                 return next(ApiError.badRequest(USER_NOT_FOUND));
