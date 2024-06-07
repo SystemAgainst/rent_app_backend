@@ -82,7 +82,7 @@ class LessorController {
         try {
             const { email, password } = req.body;
 
-            const user = await Lessor.findOne( { where: {email} } );
+            const user = await Lessor.findOne( { where: {email} } ) || await Client.findOne( { where: {email} } );
 
             if (!user) {
                 return next(ApiError.internal(USER_NOT_FOUND))
