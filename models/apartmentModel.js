@@ -41,7 +41,7 @@ const Apartment = sequelize.define('Apartment', {
     lessor_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-    }
+    },
 }, {
     tableName: 'apartment',
 });
