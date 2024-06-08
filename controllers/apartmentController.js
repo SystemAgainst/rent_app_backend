@@ -1,11 +1,16 @@
 const ApiError = require("../errors/apiError");
 const { INTERNAL_ERROR, USER_NOT_FOUND, APARTMENT_NOT_FOUND} = require("../errors/constants");
-const { Apartment, Lessor } = require("../models");
+const { Apartment, Lessor, Payment } = require("../models");
 
 class ApartmentController {
     async getAll(req, res, next) {
         try {
-            const apartmentList = await Apartment.findAndCountAll({});
+            const apartmentList = await Apartment.findAndCountAll({
+                include: [{
+                    model: Payment,
+                    as: 'payment'
+                }]
+            });
 
             res.status(201).json(apartmentList);
         } catch (e) {
@@ -24,6 +29,10 @@ class ApartmentController {
                     {
                         model: Lessor,
                         as: 'lessor',
+                    },
+                    {
+                        model: Payment,
+                        as: 'payment'
                     },
                 ],
             });
@@ -58,7 +67,16 @@ class ApartmentController {
                 lessor_id
             });
 
-            res.status(201).json(apartment);
+            // Создаем запись в таблице Payment
+            const payment = await Payment.create({
+                apartmentId: apartment.id,
+                status: false // начальный статус оплаты
+            });
+
+            res.status(201).json({
+                ...apartment.toJSON(),
+                payment: payment.toJSON() // включаем данные о платеже в ответ
+            });
         } catch (e) {
             console.error(e);
             return next(ApiError.internal(INTERNAL_ERROR));
@@ -87,6 +105,25 @@ class ApartmentController {
             });
 
             res.status(200).json(apartment);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
+        }
+    }
+
+    async updatePaymentStatus(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { status } = req.body;
+
+            const payment = await Payment.findByPk(id);
+
+            if (!payment) {
+                return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
+            }
+
+            await payment.update({ status });
+            res.status(200).json(payment);
         } catch (e) {
             console.error(e);
             return next(ApiError.internal(INTERNAL_ERROR));
