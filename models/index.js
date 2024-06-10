@@ -8,6 +8,9 @@ const Payment = require('./paymentModel');
 Lessor.belongsTo(Passport, { foreignKey: 'passport_id', as: 'passport' });
 Passport.hasOne(Lessor, { foreignKey: 'passport_id', as: 'lessor' });
 
+Client.belongsTo(Passport, { foreignKey: 'passport_id', as: 'passport' });
+Passport.hasOne(Client, { foreignKey: 'passport_id', as: 'client' });
+
 Apartment.belongsTo(Lessor, { foreignKey: 'lessor_id', as: 'lessor' });
 Lessor.hasMany(Apartment, { foreignKey: 'lessor_id', as: 'apartments' });
 

@@ -1,10 +1,10 @@
 const Router = require('express');
 const router = new Router();
 const controller = require('../controllers/clientController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const checkRole = require('../middlewares/checkRoleMiddleware');
 
 router.get('/list', controller.getAll);
-router.post('/add', controller.createClient);
+router.post('/add', checkRole('LESSOR'), controller.createClient);
 // router.post('/login', controller.login);
 
 module.exports = router;
