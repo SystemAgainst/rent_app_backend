@@ -100,56 +100,6 @@ class LessorController {
             return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
-
-    async addClient(req, res, next) {
-        try {
-            const { fullName, passportNumber, monthlyPayment, paymentDay, lessorId, apartmentId } = req.body;
-
-            const lessor = await Lessor.findByPk(lessorId);
-            if (!lessor) {
-                return next(ApiError.badRequest(USER_NOT_FOUND));
-            }
-
-            const apartment = await Apartment.findByPk(apartmentId);
-            if (!apartment) {
-                return next(ApiError.badRequest('Apartment not found'));
-            }
-
-            const existingClient = await Client.findOne({ where: { apartmentId } });
-            if (existingClient) {
-                return next(ApiError.badRequest('Apartment already has a client'));
-            }
-
-            const client = await Client.create({
-                fullName,
-                passportNumber,
-                monthlyPayment,
-                paymentDay,
-                lessorId,
-                apartmentId
-            });
-
-            res.status(201).json(client);
-        } catch (e) {
-            console.error(e);
-            return next(ApiError.internal(INTERNAL_ERROR));
-        }
-    }
-
-    async getClients(req, res, next) {
-        try {
-            const clientsList = await Client.findAndCountAll({});
-
-            if (clientsList.count === 0) {
-                return next(ApiError.badRequest(USER_NOT_FOUND));
-            }
-
-            res.status(201).json(clientsList);
-        } catch (e) {
-            console.error(e);
-            return next(ApiError.internal(INTERNAL_ERROR));
-        }
-    }
 }
 
 
