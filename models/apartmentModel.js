@@ -42,10 +42,6 @@ const Apartment = sequelize.define('Apartment', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    isAvailable: {
-        type: DataTypes.ENUM("СВОБОДНО", "ЗАНЯТО"),
-        defaultValue: "СВОБОДНО",
-    }
 }, {
     tableName: 'apartment',
 });

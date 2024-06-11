@@ -18,10 +18,20 @@ class ClientController {
     async getAll(req, res, next) {
         try {
             const clientList = await Client.findAndCountAll({
-                include: [{
-                    model: Apartment,
-                    as: 'apartment'
-                }]
+                include: [
+                    {
+                        model: Apartment,
+                        as: 'apartment',
+                    },
+                    {
+                        model: Passport,
+                        as: 'passport',
+                    },
+                    {
+                        model: Lessor,
+                        as: 'lessor',
+                    },
+                ],
             });
 
             if (clientList.count === 0) {

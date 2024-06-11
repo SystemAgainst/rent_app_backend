@@ -15,7 +15,6 @@ module.exports = function(role) {
             }
 
             const decoded = jwt.verify(token, process.env.SECRET_KEY);
-            console.log('Decoded token:', decoded); // Добавьте эту строку для отладки
 
             if (decoded.role !== role) {
                 return res.status(403).json({message: "Нет доступа"});

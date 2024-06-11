@@ -1,15 +1,21 @@
 const ApiError = require("../errors/apiError");
 const { INTERNAL_ERROR, USER_NOT_FOUND, APARTMENT_NOT_FOUND} = require("../errors/constants");
-const { Apartment, Lessor, Payment } = require("../models");
+const { Apartment, Lessor, Payment, Status} = require("../models");
 
 class ApartmentController {
     async getAll(req, res, next) {
         try {
             const apartmentList = await Apartment.findAndCountAll({
-                include: [{
-                    model: Payment,
-                    as: 'payment'
-                }]
+                include: [
+                    {
+                        model: Payment,
+                        as: 'payment',
+                    },
+                    {
+                        model: Status,
+                        as: 'status',
+                    },
+                ]
             });
 
             res.status(201).json(apartmentList);
@@ -70,12 +76,18 @@ class ApartmentController {
             // Создаем запись в таблице Payment
             const payment = await Payment.create({
                 apartmentId: apartment.id,
-                status: false // начальный статус оплаты
+                status: false
             });
+
+            const status = await Status.create({
+                apartmentId: apartment.id,
+                status: "OCCUPIED",
+            })
 
             res.status(201).json({
                 ...apartment.toJSON(),
-                payment: payment.toJSON() // включаем данные о платеже в ответ
+                status: status.toJSON(),
+                payment: payment.toJSON(),
             });
         } catch (e) {
             console.error(e);
