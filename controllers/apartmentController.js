@@ -40,6 +40,10 @@ class ApartmentController {
                         model: Payment,
                         as: 'payment'
                     },
+                    {
+                        model: Status,
+                        as: 'status'
+                    },
                 ],
             });
 
