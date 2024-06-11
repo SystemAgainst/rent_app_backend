@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const { Lessor, Passport, Client, Apartment } = require("../models");
+const { Lessor, Passport, Client, Apartment, Payment, Status} = require("../models");
 const ApiError = require('../errors/apiError');
 const {
-    INTERNAL_ERROR, USER_NOT_FOUND, INVALID_DATA, EMAIL_EXIST,
+    INTERNAL_ERROR, USER_NOT_FOUND, INVALID_DATA, EMAIL_EXIST, APARTMENT_NOT_FOUND,
 } = require("../errors/constants");
 
 const generateJwt = (id, email, role, name, last_name, middle_name, passport_number, passport_series) => {
@@ -81,6 +81,25 @@ class ClientController {
 
             return res.status(201).json({ token });
 
+        } catch (error) {
+            console.error(error);
+            return next(ApiError.internal(INTERNAL_ERROR));
+        }
+    }
+
+    async deleteOne(req, res, next) {
+        try {
+            const { id } = req.params;
+
+            const client = await Client.findByPk(id);
+
+            if (!client) {
+                return next(ApiError.badRequest(USER_NOT_FOUND));
+            }
+
+            await client.destroy();
+
+            res.status(200).json({ message: "Client deleted successfully" });
         } catch (error) {
             console.error(error);
             return next(ApiError.internal(INTERNAL_ERROR));

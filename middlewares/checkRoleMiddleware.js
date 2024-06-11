@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { NOT_AUTHORIZED} = require("../errors/constants");
+const {logger} = require("sequelize/lib/utils/logger");
 
 module.exports = function(role) {
     return function (req, res, next) {
