@@ -141,6 +141,45 @@ class ApartmentController {
             return next(ApiError.internal(INTERNAL_ERROR));
         }
     }
+
+    async remove(req, res, next) {
+        try {
+            const { id } = req.params;
+
+            const apartment = await Apartment.findOne({
+                where: { id },
+                include: [
+                    {
+                        model: Payment,
+                        as: 'payment'
+                    },
+                    {
+                        model: Status,
+                        as: 'status'
+                    },
+                ],
+            });
+
+            if (!apartment) {
+                return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
+            }
+
+            // Удаляем связанные записи
+            if (apartment.payment) {
+                await apartment.payment.destroy();
+            }
+            if (apartment.status) {
+                await apartment.status.destroy();
+            }
+
+            await apartment.destroy();
+
+            res.status(200).json({ message: "Apartment deleted successfully" });
+        } catch (e) {
+            console.error('Error deleting apartment:', e);
+            return next(ApiError.internal(INTERNAL_ERROR));
+        }
+    }
 }
 
 module.exports = new ApartmentController();

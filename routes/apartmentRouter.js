@@ -8,5 +8,6 @@ router.get('/list', checkRole('LESSOR'), controller.getAll);
 router.get('/:id', checkRole('LESSOR'), controller.getOne);
 router.patch('/:id', checkRole('LESSOR'), controller.update);
 router.patch('/:id/payment', checkRole('CLIENT'), controller.updatePaymentStatus);
+router.delete('/:id', checkRole('LESSOR'), controller.remove);
 
 module.exports = router;
