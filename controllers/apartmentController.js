@@ -1,6 +1,6 @@
 const ApiError = require("../errors/apiError");
 const { INTERNAL_ERROR, USER_NOT_FOUND, APARTMENT_NOT_FOUND} = require("../errors/constants");
-const { Apartment, Lessor, Payment, Status} = require("../models");
+const { Apartment, Lessor, Payment, Status, Client} = require("../models");
 
 class ApartmentController {
     async getAll(req, res, next) {
@@ -14,6 +14,10 @@ class ApartmentController {
                     {
                         model: Status,
                         as: 'status',
+                    },
+                    {
+                        model: Client,
+                        as: 'client',
                     },
                 ]
             });
