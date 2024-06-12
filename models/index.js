@@ -1,4 +1,3 @@
-const sequelize = require('../config/db');
 const Lessor = require('./lessorModel');
 const Passport = require('./passportModel');
 const Apartment = require('./apartmentModel');

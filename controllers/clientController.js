@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const { Lessor, Passport, Client, Apartment, Payment, Status} = require("../models");
+const { Lessor, Passport, Client, Apartment} = require("../models");
 const ApiError = require('../errors/apiError');
 const {
-    INTERNAL_ERROR, USER_NOT_FOUND, INVALID_DATA, EMAIL_EXIST, APARTMENT_NOT_FOUND,
+    INTERNAL_ERROR, USER_NOT_FOUND, INVALID_DATA, EMAIL_EXIST,
 } = require("../errors/constants");
 
 const generateJwt = (id, email, role, name, last_name, middle_name, passport_number, passport_series) => {
