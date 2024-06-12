@@ -150,6 +150,25 @@ class ApartmentController {
         }
     }
 
+    async updateApartmentStatus(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { statusOccupancy } = req.body;
+
+            const status = await Status.findByPk(id);
+
+            if (!status) {
+                return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
+            }
+
+            await status.update({ statusOccupancy });
+            res.status(200).json(status);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.internal(INTERNAL_ERROR));
+        }
+    }
+
     async remove(req, res, next) {
         try {
             const { id } = req.params;
