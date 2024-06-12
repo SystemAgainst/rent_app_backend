@@ -25,7 +25,7 @@ const Client = sequelize.define('Client', {
     },
     apartmentId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     lessorId: {
         type: DataTypes.INTEGER,
