@@ -14,7 +14,7 @@ const Status = sequelize.define('Status', {
     statusOccupancy: {
         type: DataTypes.ENUM("OCCUPIED", "FREE"),
         allowNull: false,
-        defaultValue: "OCCUPIED",
+        defaultValue: "FREE",
     }
 }, {
     tableName: 'status',
