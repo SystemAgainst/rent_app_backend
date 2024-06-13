@@ -134,7 +134,7 @@ class ApartmentController {
     async updatePaymentStatus(req, res, next) {
         try {
             const { id } = req.params;
-            const { status } = req.body;
+            const { statusPayment } = req.body;
 
             const payment = await Payment.findByPk(id);
 
@@ -142,7 +142,7 @@ class ApartmentController {
                 return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
             }
 
-            await payment.update({ status });
+            await payment.update({ statusPayment });
             res.status(200).json(payment);
         } catch (e) {
             console.error(e);

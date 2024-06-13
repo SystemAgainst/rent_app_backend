@@ -11,10 +11,10 @@ const Payment = sequelize.define('Payment', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    status: {
-        type: DataTypes.BOOLEAN,
+    statusPayment: {
+        type: DataTypes.ENUM("PAID", "NOT_PAID"),
         allowNull: false,
-        defaultValue: false
+        defaultValue: "NOT_PAID"
     }
 }, {
     tableName: 'payment',
