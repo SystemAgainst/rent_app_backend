@@ -173,6 +173,17 @@ class ApartmentController {
         try {
             const { id } = req.params;
 
+            // Найти все связанные записи в таблице clients
+            const clients = await Client.findAll({ where: { apartmentId: id } });
+
+            if (clients.length > 0) {
+                // Удалить все связанные записи в таблице clients
+                for (const client of clients) {
+                    await client.destroy();
+                }
+            }
+
+            // Найти запись в таблице apartment
             const apartment = await Apartment.findOne({
                 where: { id },
                 include: [
@@ -183,15 +194,15 @@ class ApartmentController {
                     {
                         model: Status,
                         as: 'status'
-                    },
-                ],
+                    }
+                ]
             });
 
             if (!apartment) {
                 return next(ApiError.badRequest(APARTMENT_NOT_FOUND));
             }
 
-            // Удаляем связанные записи
+            // Удалить связанные записи в таблице payment и status
             if (apartment.payment) {
                 await apartment.payment.destroy();
             }
@@ -199,6 +210,7 @@ class ApartmentController {
                 await apartment.status.destroy();
             }
 
+            // Удалить запись из таблицы apartment
             await apartment.destroy();
 
             res.status(200).json({ message: "Apartment deleted successfully" });
